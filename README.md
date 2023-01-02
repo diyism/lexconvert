@@ -1,3 +1,8 @@
+$ python ./lexconvert.py --phones2phones unicode-ipa espeak "tə'meitoʊ" | espeak-ng
+
+$ python ./lexconvert.py --phones2phones unicode-ipa espeak "he lˈəʊ" | espeak-ng
+
+
 # lexconvert
 Convert phoneme codes and lexicon formats for English speech synths, from http://ssb22.user.srcf.net/gradint/lexconvert.html
 (also mirrored at http://ssb22.gitlab.io/gradint/lexconvert.html just in case)
