@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # May be run with either Python 2 or Python 3
 
-"""lexconvert v0.36 - convert phonemes between different speech synthesizers etc
-(c) 2007-22 Silas S. Brown.  License: Apache 2"""
+"""lexconvert v0.42 - convert phonemes between English speech synthesizers etc
+(c) 2007-24 Silas S. Brown.  License: Apache 2"""
 
 # Run without arguments for usage information
 
@@ -51,6 +51,7 @@ def Phonemes():
    _, var4_a_as_in_ah = variant()
    _, var5_a_as_in_ah = variant()
    a_as_in_apple = vowel()
+   _, var1_a_as_in_apple = variant()
    u_as_in_but = vowel() # or the first part of un as in hunt
    _, var1_u_as_in_but = variant()
    o_as_in_orange = vowel()
@@ -760,6 +761,11 @@ def LexFormats():
     word_separator=" ",phoneme_separator="",
     safe_to_drop_characters=True, # TODO: really?
   ),
+  "x-sampa-strict" : makeVariantDic(
+     "A stricter version of X-SAMPA, which can distinguish between sounds not distinct in British English when converting to/from IPA, but might not work on all voices",
+     ('a',var1_a_as_in_apple),
+     ('r',var1_r),
+     noInherit=True),
   "vocaloid" : makeVariantDic(
      "X-SAMPA phonemes for Yamaha's Vocaloid singing synthesizer.  Contributed by Lorenzo Gatti, who tested in Vocaloid 4 using two American English voices.",
      ('-',syllable_separator),
@@ -803,7 +809,7 @@ def LexFormats():
      noInherit=True
   ),
   "android-pico" : makeVariantDic(
-    'X-SAMPA phonemes for the default \"Pico\" voice in Android (1.6+, American), wrapped in Java code', # you could put en-GB instead of en-US, but it must be installed on the phone
+    'X-SAMPA phonemes for the default \"Pico\" voice in Android 1.6+ (American), wrapped in Java code', # you could put en-GB instead of en-US, but it must be installed on the phone
     ('A:',a_as_in_ah), # won't sound without the :
     (var5_a_as_in_ah,'A:',False), # a: won't sound
     ('@U:',o_as_in_go),
@@ -1327,76 +1333,76 @@ def LexFormats():
   ),
 
   "cheetah" : makeDic(
-     'Allophone codes for the 1983 "Cheetah Sweet Talker" SP0256-based hardware add-on for ZX Spectrum and BBC Micro home computers. The conversion from phonemes to allophones might need tweaking.',
+     'Allophone codes for the 1983 "Cheetah Sweet Talker" SP0256-based hardware add-on for ZX Spectrum and BBC Micro home computers. The conversion from phonemes to allophones might need tweaking. Set the CHEETAH_SYM environment variable to see the mnemonic symbols from the instruction sheet (not actually used by the system).',
      (syllable_separator,'',False),
      ("0",syllable_separator,False),
      ("1",syllable_separator,False),
      ("2",syllable_separator,False),
      ("3",syllable_separator,False),
      ("4",syllable_separator,False),
-     ("5",oy_as_in_toy),
-     ("6",eye),
-     ("7",e_as_in_them),
-     ("8",k,False),
-     ("9",p),
-     ("10",j_as_in_jump),
-     ("11",n),
-     ("12",i_as_in_it),
-     ("13",t),
-     ("14",r),
-     ("15",u_as_in_but),
-     ("16",m),
-     ("17",t,False),
-     ("18",th_as_in_them),
-     ("19",e_as_in_eat),
-     ("20",a_as_in_ate),
-     ("21",d),
-     ("22",oo_as_in_food),
-     ("23",close_to_or),
-     ("24",o_as_in_orange),
-     ("25",y),
-     ("26",a_as_in_apple),
-     ("27",h),
-     ("28",b),
-     ("29",th_as_in_think),
-     (opt_u_as_in_pull,"30",False),
-     ("30",opt_ul_as_in_pull),
-     ("31",oo_as_in_food,False),
-     ("32",o_as_in_now),
-     ("33",d,False),
-     ("34",g,False),
-     ("35",v),
-     ("36",g),
-     ("37",sh),
-     ("38",ge_of_blige_etc),
-     ("39",r,False),
-     ("40",f),
-     ("41",k),
-     ("42",k,False),
-     ("43",z),
-     ("44",ng),
-     ("45",l),
-     ("46",w),
-     ("47",a_as_in_air),
-     ("49",y,False),
-     ("50",ch),
-     ("51",a_as_in_ago),
-     ("52",e_as_in_herd),
-     (var1_a_as_in_ago,"52",False),
-     ("53",o_as_in_go),
-     ("54",th_as_in_them,False),
-     ("55",s),
-     ("56",n,False),
-     ("57",h,False),
-     ("58",var3_close_to_or),
-     ("59",a_as_in_ah),
-     ("60",ear), # or var2_ear
-     ("61",g,False),
-     ("62",l,False),
-     ("63",b,False),
+     (cheetah("OY","5"),oy_as_in_toy),
+     (cheetah("AY","6"),eye),
+     (cheetah("EH","7"),e_as_in_them), # can be doubled
+     (cheetah("KK3","8"),k,False), # TODO: use instead of KK2 if before ll/w/rr/uw/uh/ow/oy/or/ar/ao
+     (cheetah("PP","9"),p),
+     (cheetah("JH","10"),j_as_in_jump),
+     (cheetah("NN1","11"),n),
+     (cheetah("IH","12"),i_as_in_it), # can be doubled
+     (cheetah("TT2","13"),t),
+     (cheetah("RR1","14"),r),
+     (cheetah("AX","15"),u_as_in_but), # can be doubled
+     (cheetah("MM","16"),m),
+     (cheetah("TT1","17"),t,False), # TODO: use instead of TT2 if before ss
+     (cheetah("DH1","18"),th_as_in_them),
+     (cheetah("IY","19"),e_as_in_eat),
+     (cheetah("EY","20"),a_as_in_ate),
+     (cheetah("DD1","21"),d),
+     (cheetah("UW1","22"),oo_as_in_food),
+     (cheetah("AO","23"),close_to_or), # can be doubled
+     (cheetah("AA","24"),o_as_in_orange), # can be doubled
+     (cheetah("YY2","25"),y),
+     (cheetah("AE","26"),a_as_in_apple), # can be doubled
+     (cheetah("HH1","27"),h),
+     (cheetah("BB1","28"),b),
+     (cheetah("TH","29"),th_as_in_think), # can be doubled if at start of word
+     (opt_u_as_in_pull,cheetah("UH","30"),False),
+     (cheetah("UH","30"),opt_ul_as_in_pull), # can be doubled
+     (cheetah("UW2","31"),oo_as_in_food,False), # TODO: use instead of UW1 in one-syllable words
+     (cheetah("AW","32"),o_as_in_now),
+     (cheetah("DD2","33"),d,False), # TODO: use instead of DD1 in initial position
+     (cheetah("GG3","34"),g,False), # TODO: use instead of GG1 before ae/aw/ay/ar/aa/ao/or/er and final g
+     (cheetah("VV","35"),v),
+     (cheetah("GG1","36"),g),
+     (cheetah("SH","37"),sh),
+     (cheetah("ZH","38"),ge_of_blige_etc),
+     (cheetah("RR2","39"),r,False), # TODO: use instead of RR1 if in a cluster (br etc)
+     (cheetah("FF","40"),f), # can be doubled
+     (cheetah("KK2","41"),k),
+     (cheetah("KK1","42"),k,False), # TODO: use instead of KK2 in final position
+     (cheetah("ZZ","43"),z),
+     (cheetah("NG","44"),ng),
+     (cheetah("LL","45"),l),
+     (cheetah("WW","46"),w),
+     (cheetah("XR","47"),a_as_in_air),
+     (cheetah("YY1","49"),y,False), # TODO: use instead of YY2 if after a consonant
+     (cheetah("CH","50"),ch),
+     (cheetah("ER1","51"),a_as_in_ago),
+     (cheetah("ER2","52"),e_as_in_herd),
+     (var1_a_as_in_ago,cheetah("ER2","52"),False),
+     (cheetah("OW","53"),o_as_in_go),
+     (cheetah("DH2","54"),th_as_in_them,False), # TODO: use instead of DH1 if not in initial position
+     (cheetah("SS","55"),s),
+     (cheetah("NN2","56"),n,False), # TODO: use instead of NN1 before uh/ow/oy/or/ar/aa
+     (cheetah("HH2","57"),h,False), # TODO: use instead of HH1 befor uw/uh/ow/oy/ao/or/ar
+     (cheetah("OR","58"),var3_close_to_or),
+     (cheetah("AR","59"),a_as_in_ah),
+     (cheetah("YR","60"),ear), # or var2_ear
+     (cheetah("GG2","61"),g,False), # TODO: use instead of GG1 before uw/uh/ow/oy/ax/rr/ll
+     (cheetah("EL","62"),l,False), # TODO: use instead of LL if from -le
+     (cheetah("BB2","63"),b,False), # TODO: use instead of BB1 for initial b before vowel
      approximate_missing=True,
      phoneme_separator=',',safe_to_drop_characters=",",
-     inline_header="DATA ",inline_footer=",0"),
+     inline_header="DATA ",inline_footer=","+cheetah("","0")), # TODO: may need to repeat the 'DATA' if we exceed line length.  BBC Micro can take 238 characters per line; Spectrum can theoretically take 65536, although input on the 128k model may run into trouble after 542
 
   # END (?) PRE-32bit ERA SYNTHS (but see TODO above re SpeakJet, which is below)
 
@@ -1561,7 +1567,7 @@ def LexFormats():
     (u'\u0251\u0279',var4_a_as_in_ah),
     (u'a\u02d0',var5_a_as_in_ah),
     (u'\xe6',a_as_in_apple),
-    ('a',a_as_in_apple,False),
+    ('a',var1_a_as_in_apple),
     (u'\u028c',u_as_in_but),
     ('\u1d27',u_as_in_but,False), # 28c sometimes mistakenly written as 1d27
     (u'\u0252',o_as_in_orange),
@@ -1616,8 +1622,8 @@ def LexFormats():
     (u'\u0254\u026a',oy_as_in_toy),
     (u'o\u026a',var1_oy_as_in_toy),
     ('p',p),
-    (u'\u0279',r), ('r',r,False),
-    (var1_r,'r',False),
+    (u'\u0279',r),
+    ('r',var1_r),
     ('s',s),
     (u'\u0283',sh),
     ('t',t),
@@ -1746,7 +1752,7 @@ for l in i:
     ('*#',var4_a_as_in_ah),
     ('A3',var5_a_as_in_ah),
     ('%',a_as_in_apple),
-    ('A',a_as_in_apple,False),
+    ('A',var1_a_as_in_apple),
     ('+',u_as_in_but),
     ('4*',o_as_in_orange),
     (var1_o_as_in_orange,'*',False),
@@ -1799,7 +1805,7 @@ for l in i:
     ('O/',var1_oy_as_in_toy),
     ('P',p),
     ('#',r),
-    (var1_r,'R',False),
+    ('R',var1_r),
     ('S',s),
     (':',sh),
     ('T',t),
@@ -1848,6 +1854,7 @@ for l in i:
     ('A\\textturnr{}',var4_a_as_in_ah),
     ('a:',var5_a_as_in_ah),
     ('\\ae{}',a_as_in_apple),
+    ('a',var1_a_as_in_apple),
     ('2',u_as_in_but),
     ('6',o_as_in_orange),
     (var1_o_as_in_orange,'A',False),
@@ -1899,7 +1906,7 @@ for l in i:
     ('oI',var1_oy_as_in_toy),
     ('p',p),
     ('\\textturnr{}',r),
-    (var1_r,'r',False),
+    ('r',var1_r),
     ('s',s),
     ('S',sh),
     ('t',t),
@@ -2223,7 +2230,7 @@ Convert phonemes from <format> and try it with Mac OS British voices (see --mac-
 
 def mainopt_phones(i):
    """*<format> [<words>]
-Use eSpeak to convert text to phonemes, and then convert the phonemes to format 'format'.
+Use eSpeak to convert text to phonemes, and then convert the phonemes to format <format>.
 E.g.: python lexconvert.py --phones unicode-ipa This is a test sentence.
 Set environment variable PHONES_PIPE_COMMAND to an additional command to which to write the phones as well as standard output.  (If standard input is a terminal then this will be done separately after each line.)
 (Some commercial speech synthesizers do not work well when driven entirely from phonemes, because their internal format is different and is optimised for normal text.)
@@ -2331,7 +2338,8 @@ function h5a(link) {
      ae.setAttribute('src', link.href+"&filetype=ogg");
      ae.play(); return false; }
  } return true; }
-//--></script>""")
+//-->
+</script>""")
    else: linkStart,linkEnd = lambda w:maybe_bytes("",w), ""
    rubyList = []
    for clause in parseIntoWordsAndClauses("espeak",response):
@@ -2656,6 +2664,11 @@ def speakjet(symbol,opcode):
       return chr(opcode)
    else: return ifset('SPEAKJET_SYM',symbol,str(opcode))
 
+def cheetah(symbol,opcode):
+   "Special-case function for the Cheetah table"
+   if ifset('CHEETAH_SYM',1): return '"'+symbol+'"' # quote for DATA
+   else: return opcode
+
 def makeDic(doc,*args,**kwargs):
     "Make a dictionary with a doc string, default-bidirectional mappings and extra settings; see LexFormats for how this is used."
     assert type(doc)==str, "doc must be a string"
@@ -2773,7 +2786,7 @@ def make_dictionary(sourceName,destName):
       assert type(k) in [bytes,unicode]
       d[k] = dest[v]
       if int(v) in consonants: dest_consonants.add(d[k])
-      if int(v)==e_as_in_herd and (not implicit_vowel_before_NL or v==int(v)): # TODO: or u_as_in_but ?  used by festival and some other synths before words ending 'n' or 'l' (see usage of implicit_vowel_before_NL later)
+      if int(v)==e_as_in_herd and not "LEXCONVERT_NO_IMPLICIT_VOWELS" in os.environ and (not implicit_vowel_before_NL or v==int(v)): # TODO: or u_as_in_but ?  used by festival and some other synths before words ending 'n' or 'l' (see usage of implicit_vowel_before_NL later)
         implicit_vowel_before_NL = d[k]
       d[as_utf8(k)] = d[k]
       try: d[as_unicode(k)] = d[k]
@@ -2829,7 +2842,11 @@ def convert(pronunc,source,dest):
                     if dest_syllable_sep: ret.append(maybe_bytes(dest_syllable_sep,toAdd)) # (TODO: this assumes stress marks are at end of syllable rather than immediately after vowel; correct for Festival; check others; probably a harmless assumption though; mac-uk is better with syllable separators although espeak basically ignores them)
                     toAdd = maybe_bytes("",toAdd)
                 # attempt to sort out the festival dictionary's (and other's) implicit_vowel_before_NL
-                elif implicit_vowel_before_NL and ret and ret[-1] and toAdd in [maybe_bytes('n',toAdd),maybe_bytes('l',toAdd)] and ret[-1] in dest_consonants: ret.append(maybe_bytes(implicit_vowel_before_NL,toAdd)+maybe_bytes('*added',toAdd))
+                elif implicit_vowel_before_NL and ret and ret[-1] and toAdd in [maybe_bytes('n',toAdd),maybe_bytes('l',toAdd)] and ret[-1] in dest_consonants:
+                   msg = "Warning: added implicit vowel using British Festival logic\nSet LEXCONVERT_NO_IMPLICIT_VOWELS environment variable if you didn't want this\n"
+                   if not msg in warnedAlready:
+                      warnedAlready.add(msg) ; sys.stderr.write(msg)
+                   ret.append(maybe_bytes(implicit_vowel_before_NL,toAdd)+maybe_bytes('*added',toAdd))
                 elif len(ret)>2 and ret[-2].endswith(maybe_bytes('*added',ret[-2])) and toAdd and not toAdd in dest_consonants and not toAdd==dest_syllable_sep: del ret[-2]
                 if toAdd:
                     # Add it, but if toAdd is multiple phonemes, try to put toAddAfter after the FIRST phoneme
@@ -3156,35 +3173,39 @@ def hyphenate(word,numSyls):
   orig = word
   try: word,isu8 = word.decode('utf-8'),True
   except: isu8 = False
-  pre=[] ; post=[]
-  while word and not 'a'<=word[:1].lower()<='z':
-    pre.append(word[:1]) ; word=word[1:]
-  while word and not 'a'<=word[-1].lower()<='z':
-    post.insert(0,word[-1:]) ; word=word[:-1]
+  pre = re.match("(?i)[^a-z]*",word).group()
+  post = re.findall("(?i)[^a-z]*$",word)[0]
+  word = word[len(pre):len(word)-len(post)]
   if numSyls>len(word): return orig # probably numbers or something
-  l = int((len(word)+numSyls/2)/numSyls) ; syls = []
+  syls = []
   for i in range(numSyls):
-    if i==numSyls-1: syls.append(word[i*l:])
-    else: syls.append(word[i*l:(i+1)*l])
+    if i==numSyls-1: syls.append(word[int(i*len(word)/numSyls):])
+    else: syls.append(word[int(i*len(word)/numSyls):int((i+1)*len(word)/numSyls)])
     if len(syls)>1:
+      if not re.search("(?i)[aeiouy]",syls[-1]) and re.search("(?i)[aeiouy].*[aeiouy]",syls[-2]):
+        # try to have at least one vowel per syllable: take from previous syllable if it has two and we have none
+        syls[-2],syls[-1]=syls[-2][:re.search("(?i)[aeiouy][^aeiouy]*$",syls[-2]).start()],re.search("(?i)[aeiouy][^aeiouy]*$",syls[-2]).group()+syls[-1]
+      elif not re.search("(?i)[aeiouy]",syls[-2]) and re.search("(?i)[aeiouy]",syls[-1]):
+        # give a vowel to previous syllable if it has none (we'll try to get one from next if that's our last)
+        syls[-2],syls[-1]=syls[-2]+syls[-1][:re.search("(?i)[aeiouy]",syls[-1]).start()+1],syls[-1][re.search("(?i)[aeiouy]",syls[-1]).start()+1:]
       if syls[-1].startswith('-') or (len(syls[-1])>2 and syls[-1][:1]==syls[-1][1:2] and not syls[-1][:1].lower() in "aeiou"):
         # repeated consonant at start - put one on previous
         # (or hyphen at start - move it to the previous)
         syls[-2] += syls[-1][:1]
         syls[-1] = syls[-1][1:]
       elif len(syls[-1])>2 and syls[-1][1]=='-':
-        # better move this splitpoint after that hyphen (TODO: move more than one character?)
+        # better move this splitpoint after that hyphen (todo: move more than one character?)
         syls[-2] += syls[-1][:2]
         syls[-1] = syls[-1][2:]
-      elif ((len(syls[-2])>2 and syls[-2][-1]==syls[-2][-2] and not syls[-2][-1].lower() in "aeiou") \
-            or (syls[-1] and syls[-1][:1].lower() in "aeiouy" and len(syls[-2])>2)) \
-            and list(filter(lambda x:x.lower() in "aeiou",list(syls[-2][:-1]))):
-        # repeated consonant at end - put one on next
-        # or vowel on right: move a letter over (sometimes the right thing to do...)
-        # (unless doing so leaves no vowels)
+      while len(syls[-2])>2 and syls[-2][-1]==syls[-2][-2] and not syls[-2][-1].lower() in "aeiou" \
+            or syls[-1][:1].lower() in "aeiouy" and re.search("(?i)[aeiouy]",syls[-2][:-1]) and not syls[-2][-1].lower() in 'vx':
+        # repeated consonant at end of previous - put one on this
+        # or vowel at start of this: move a letter over from prev
+        # (sometimes the right thing to do...)
+        # (unless doing so leaves no vowels on prev)
         syls[-1] = syls[-2][-1]+syls[-1]
         syls[-2] = syls[-2][:-1]
-  word = ''.join(pre)+"- ".join(syls)+''.join(post)
+  word = pre+"- ".join(syls)+post
   if isu8: word=word.encode('utf-8')
   return word
 
@@ -3412,7 +3433,8 @@ def main():
               # Python 2.6+ can have "except Message as e",
               # but Python 2.5 has to have "except Message,e"
               # which is disallowed in Python 3, so
-              msg=sys.exc_info()[1].message
+              if type(u"")==type(""): msg=str(sys.exc_info()[1])
+              else: msg=sys.exc_info()[1].message
            if msg:
               sys.stdout.flush()
               sys.stderr.write(msg+"\n") ; return 1
@@ -3479,7 +3501,7 @@ def main():
        for k in keys:
           if html: print ('<tr><td valign="top"><nobr>'+k+'</nobr></td><td valign="top">'+htmlify(getSetting(k,"doc"))+"</td></tr>")
           else: print (k+'\n: '+htmlify(getSetting(k,"doc"))+"\n")
-       if html: print ("</table><script><!-- try to be more readable on some smartphones\nif(((screen && screen.width<600) || navigator.userAgent.slice(-6)==\"Gecko/\" /* UC Browser? */) && document.getElementById && document.getElementById('formats').outerHTML) document.getElementById('formats').outerHTML = document.getElementById('formats').outerHTML.replace(/<table/g,'<dl').replace(/<.table/g,'<'+'/dl').replace(/<tr><td/g,'<dt').replace(/<.td><td/g,'<'+'/dt><dd').replace(/<.td><.tr/g,'<'+'/dd');\n//--></script>")
+       if html: print ("</table><script><!-- try to be more readable on some smartphones\nif(((screen && screen.width<600) || navigator.userAgent.slice(-6)==\"Gecko/\" /* UC Browser? */) && document.getElementById && document.getElementById('formats').outerHTML) document.getElementById('formats').outerHTML = document.getElementById('formats').outerHTML.replace(/<table/g,'<dl').replace(/<.table/g,'<'+'/dl').replace(/<tr><td/g,'<dt').replace(/<.td><td/g,'<'+'/dt><dd').replace(/<.td><.tr/g,'<'+'/'+'dd');\n//-->\n</script>") # Google crawler 2023-12 treated '/dd' as a URL and logged it as a 404 on Search Console, so we'd best split after the / as well
     else: print ("Available pronunciation formats: "+", ".join(sorted(list(lexFormats.keys())))+"\n(Use --formats to see their descriptions)")
     if markdown: colon = "\n---------------"
     else:
@@ -3496,7 +3518,7 @@ def main():
        if params.startswith('*'): params=params[1:]
        if params: opt += (' '+params)
        if html: print ("<dt>"+htmlify(opt)+"</dt><dd>"+htmlify(rest)+"</dd>")
-       elif markdown: print (opt.replace("<","`<").replace(">",">`")+"\n: "+htmlify(rest)+"\n")
+       elif markdown: print (opt.replace("<","`<").replace(">",">`")+"\n: "+htmlify(rest).replace('<','`<').replace('>','>`')+"\n")
        else: print (opt+"\n"+rest+"\n")
     if html: print ("</dl>")
     return 0
@@ -3543,7 +3565,7 @@ class MacBritish_System_Lexicon(object):
             assert not voice in MacBritish_System_Lexicon.instances, "There is already another instance of MacBritish_System_Lexicon for the "+voice+" voice"
             assert not os.system("lockfile -1 -r 10 /tmp/"+voice+".PCMWave.lock") # in case some other process has it (note: if you run with python -O, this check won't happen!)
             self.voice = voice # (don't set this if text==False, since we won't need cleanup on __del__)
-        self.filename = "/System/Library/Speech/Voices/"+voice+".SpeechVoice/Contents/Resources/PCMWave"
+        self.filename = "/System/Library/Speech/Voices/"+voice+".SpeechVoice/Contents/Resources/PCMWave" # this is no longer where it is on modern macOS (I'm not sure where it is now, or if it's even in anything like the same format)
         assert not (not os.path.exists(self.filename) and os.path.exists("/System/Library/Speech/Voices/"+voice+"Compact.SpeechVoice/Contents/Resources/PCMWave")), "The only installation of "+voice+" found on this system was the Compact one, which lexconvert does not yet support" # TODO: could try self.wordIndexStart = findW("Abiquiu"),self.phIndexStart = findW("'@b.Ik.ju"),self.wordIndexEnd = findW("www.youtube.com",1),self.phIndexEnd = findW("'d^b.l.ju.'d^b.l.ju.'d^b.l.ju.dA+t.'ju.'tjub.dA+t.kA+m",1), but "t" in phones should be ignored, "activesync" and "afterlife" have no phones, "aqua" has TWO sets of phonemes (aquarium ok) and there are other synchronization issues.
         # TODO: some sync issues persist even on the NON-Compact version in newer versions of macOS (e.g. 10.12).  This currently leads to exceptions in findW on such systems (which do say it could be due to wrong version of the voice); fixing would need looking at more sync issues as above
         assert os.path.exists(self.filename),"Cannot find an installation of '"+voice+"' on this system"
@@ -3559,8 +3581,8 @@ class MacBritish_System_Lexicon(object):
             err = os.system("sudo touch \""+lexFile+"\" ; sudo chown "+str(os.getuid())+" \""+lexFile+"\"")
             assert not err, "Error creating lexdir"
         compat_err = "\nThis probably means your Mac has a new version of the voice that is no longer compatible with this system-lexicon patch."
-        import cPickle
-        if os.path.exists(lexFile) and os.stat(lexFile).st_size: self.wordIndexStart,self.wordIndexEnd,self.phIndexStart,self.phIndexEnd = cPickle.Unpickler(open(lexFile)).load()
+        import pickle
+        if os.path.exists(lexFile) and os.stat(lexFile).st_size: self.wordIndexStart,self.wordIndexEnd,self.phIndexStart,self.phIndexEnd = pickle.Unpickler(open(lexFile)).load()
         else:
             f = open(self.filename)
             dat = getBuf(f).read()
@@ -3578,7 +3600,7 @@ class MacBritish_System_Lexicon(object):
             self.phIndexStart = findW("'e&It.o&U.e&Its")
             self.wordIndexEnd = findW("zombie",1)
             self.phIndexEnd = findW("'zA+m.bI",1)
-            if not text==False: cPickle.Pickler(open(lexFile,"w")).dump((self.wordIndexStart,self.wordIndexEnd,self.phIndexStart,self.phIndexEnd))
+            if not text==False: pickle.Pickler(open(lexFile,"w")).dump((self.wordIndexStart,self.wordIndexEnd,self.phIndexStart,self.phIndexEnd))
         if text==False: self.dFile = open(self.filename)
         else: self.dFile = open(self.filename,'r+')
         assert len(self.allWords()) == len(self.allPh()), str(len(self.allWords()))+" words but "+str(len(self.allPh()))+" phonemes"+compat_err
